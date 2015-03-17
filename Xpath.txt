@@ -1,0 +1,43 @@
+xpath
+declare namespace ns1='http://www.jeppesen.com/aoc';
+//ns1:trackingId
+
+
+
+<AOCMessage xsi:schemaLocation="http://www.jeppesen.com/aoc ../AOC/AOCMessage.xsd" xmlns="http://www.jeppesen.com/aoc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <header>
+      <trackingId>22</trackingId>
+      <msgClass>RESPONSE</msgClass>
+      <msgName>CS008</msgName>
+      <owner>Dummy receiving product</owner>
+      <version>1</version>
+      <timestamp>2010-05-25T09:30:47.0Z</timestamp>
+   </header>
+   <message>
+      <customerDataServices>
+         <validateAirportRequest>
+            <airlineCode>
+               <iata>AA</iata>
+               <icao>AAL</icao>
+            </airlineCode>
+            <login>
+               <userName>JoeUser</userName>
+               <password>passxyz</password>
+            </login>
+            <aircraftId>
+               <registrationNumber>aa1234</registrationNumber>
+               <noseNumber>0</noseNumber>
+               <serialNumber>a</serialNumber>
+            </aircraftId>
+            <airport>
+               <iata>DEN</iata>
+               <icao>KDEN</icao>
+            </airport>
+            <airport>
+               <iata>SFO</iata>
+               <icao>KSFO</icao>
+            </airport>
+         </validateAirportRequest>
+      </customerDataServices>
+   </message>
+</AOCMessage>

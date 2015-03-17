@@ -1,0 +1,108 @@
+...........update tracking ID
+
+import java.util.Random  
+Random rand = new Random()  
+context.Id=System.currentTimeMillis().toString()+ rand.nextInt(9).toString()
+
+...........request
+${updateTrackingId#result}
+
+...........groovy script some stuff may be useful 
+import java.text.SimpleDateFormat ; 
+
+StringtoWrite="|"+date
+//new File("LogFile.txt").write(StringtoWrite)
+log.info "done:"+StringtoWrite
+
+holder = groovyUtils.getXmlHolder( context.requestContent )
+
+// change password using XPath
+holder["/header/trackingId"] = context.Id
+
+log.info "Id: "+context.id
+context.id=context.id+1
+// write updated request back to teststep
+
+holder.updateProperty()
+
+context.requestContent = holder.xml
+
+//check if XML is updated
+holderCheck = groovyUtils.getXmlHolder( context.requestContent )
+log.info "trackId: "+holderCheck["/header/trackingId"]
+
+.....................WritetoLog
+def groovyUtils = new com.eviware.soapui.support.GroovyUtils( context ) 
+
+// get XmlHolder for request message def
+holder = groovyUtils.getXmlHolder( "Request#Response" )
+
+// change password using XPath
+TrackingId= holder.getNodeValue("declare namespace ns1='http://www.jeppesen.com/aoc';//ns1:trackingId")
+
+//write to file
+def ln = System.getProperty('line.separator')
+timeStamp =testRunner.testCase.testSuite.getPropertyValue( "TimeStamp" )
+log.info timeStamp
+File file = new File("C:\\Users\\swapnesh.gandhi\\SoapUI-Tutorials\\Logs\\Tracker_"+timeStamp+".txt")
+StringtoWrite="Id:"+TrackingId+"ResponseTimestamp:" + 
+holder.getNodeValue("declare namespace ns1='http://www.jeppesen.com/aoc';//ns1:timestamp")
+file.append( StringtoWrite )
+file.append("${ln}")
+
+....................Groovy Script disabled may be useful
+	long timeMillis = ;
+	int timeSeconds = (int)System.currentTimeMillis()/1000;
+	//prop= ${#TestSuite#TimeStamp}
+	testRunner.testCase.testSuite.setPropertyValue( "TimeStamp",timeSeconds.toString() )
+
+
+...................test suite setup script
+int timeSeconds = (int)System.currentTimeMillis()/1000;
+runner.testSuite.setPropertyValue( "TimeStamp",timeSeconds.toString() )
+	
+
+*******************************Synchronize
+def groovyUtils = new com.eviware.soapui.support.GroovyUtils( context ) 
+
+	// get XmlHolder for request message def
+	holder = groovyUtils.getXmlHolder( "Request#Response" )
+
+	// change password using XPath
+	TrackingId= holder.getNodeValue("declare namespace ns1='http://www.jeppesen.com/aoc';//ns1:trackingId")
+
+	//write to file
+	def ln = System.getProperty('line.separator')
+
+	//get timestamp from testcase
+	timeStamp =testRunner.testCase.getPropertyValue( "TimeVal" )
+	//groovy.lang.MissingPropertyException: No such property: context for class: com.eviware.loadui.components.soapui.SoapUILoadTestRunner
+	File file = new File("C:\\Users\\swapnesh.gandhi\\Desktop\\soapui_stuff\\Logs\\Tracker_"+timeStamp+".txt")
+
+	//def testRunnerContext = context.getProperty("LoadTestRunner").context
+	if( context.LoadTestContext ) {
+		try{
+			// synchronize the part of code in which you are accessing the variable.
+			synchronized(context.LoadTestContext)
+			{	
+				StringtoWrite="Id:"+TrackingId+"ResponseTimestamp:" + 
+						System.currentTimeMillis().toString()
+						//holder.getNodeValue("declare namespace ns1='http://www.jeppesen.com/aoc';//ns1:timestamp")
+						file.append( StringtoWrite )
+						file.append("${ln}")
+			}
+		}
+		catch(Exception e)
+		{
+			log.info(Error+e);
+		}
+	}
+	else{
+		StringtoWrite="Id:"+TrackingId+"ResponseTimestamp:" + 
+				System.currentTimeMillis().toString()
+				//holder.getNodeValue("declare namespace ns1='http://www.jeppesen.com/aoc';//ns1:timestamp")
+				file.append( StringtoWrite )
+				file.append("${ln}")
+	}
+
+

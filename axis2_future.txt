@@ -1,0 +1,3 @@
+JMS...is async..so it has a way of routing or working with correlation id which is unique and then the requets are put in some queue and after getting response back we lookup the correlation id.
+
+axis2 HTTP has a non blocking opeation with callback object which is somehow given to axis2 anf they call back that object after getting response back

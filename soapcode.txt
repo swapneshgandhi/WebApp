@@ -1,0 +1,21 @@
+def groovyUtils = new com.eviware.soapui.support.GroovyUtils( context ) 
+
+// get XmlHolder for request message def
+
+holder = groovyUtils.getXmlHolder( "login#Request" )
+
+ 
+
+// change password using XPath
+
+holder["//username"] = "test" 
+
+
+// write updated request back to teststep
+
+holder.updateProperty()
+
+context.requestContent = holder.xml
+
+
+

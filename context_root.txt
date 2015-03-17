@@ -1,0 +1,5 @@
+create a jboss-web.xml
+with contextroot to /
+
+and change standalone.xml
+with enable-welcome-root=false
